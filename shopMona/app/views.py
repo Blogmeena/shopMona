@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from .models import Customer, Cart, Product, OrderPlaced
 from .forms import CustomerRegistrationForm
+from django.contrib import messages
 
 class ProductView(View):
  def get(self,request):
@@ -58,11 +59,7 @@ def laptop(request, data=None):
   laptops = Product.objects.filter(category='L').filter(brand=data)
  return render(request, 'app/laptop.html',{'laptops':laptops})
 
-def login(request):
- return render(request, 'app/login.html')
 
-#def customerregistration(request):
- #return render(request, 'app/customerregistration.html')
 
 class CustomerRegistrationView(View):
  def get(self, request):
@@ -71,6 +68,7 @@ class CustomerRegistrationView(View):
  def post(self,request):
   form = CustomerRegistrationForm(request.POST)
   if form.is_valid():
+   messages.success(request, 'Congratulation!! Registered successfully')
    form.save()
   return render(request, 'app/customerregistration.html',{'form':form})
 
